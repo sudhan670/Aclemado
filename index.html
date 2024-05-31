@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Three.js Room Scene with Actions</title>
+    <title>Three.js Room Scene Assignment</title>
     <style>
-        body {
-            margin: 0;
-        }
-
-        canvas {
-            display: block;
-        }
+        body { margin: 0; }
+        canvas { display: block; }
     </style>
 </head>
-
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script>
         // Scene setup
         const scene = new THREE.Scene();
@@ -29,13 +22,14 @@
         // OrbitControls for camera interaction
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-        // Room setup
-        const roomWidth = 31.62; // sqrt(1000) in feet converted to meters
-        const roomDepth = 31.62;
+        // Room dimensions in meters (1 sqft = 0.092903 sqm)
+        const roomWidth = Math.sqrt(1000 * 0.092903);  // ~9.29 meters
+        const roomDepth = Math.sqrt(1000 * 0.092903);  // ~9.29 meters
         const roomHeight = 3; // Example room height in meters
 
+        // Room setup
         const roomGeometry = new THREE.BoxGeometry(roomWidth, roomHeight, roomDepth);
-        const roomMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
+        const roomMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true});
         const room = new THREE.Mesh(roomGeometry, roomMaterial);
         room.position.y = roomHeight / 2;
         scene.add(room);
@@ -44,7 +38,7 @@
         function getRandomPosition(width, height, depth) {
             return {
                 x: (Math.random() - 0.5) * width,
-                y: (Math.random() - 0.5) * height + roomHeight / 2,
+                y: Math.random() * height,
                 z: (Math.random() - 0.5) * depth
             };
         }
@@ -53,7 +47,7 @@
         const objects = [];
         for (let i = 0; i < 10; i++) { // Adjust number of objects as needed
             const geometry = new THREE.BoxGeometry(1, 1, 1); // Example object size
-            const material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
+            const material = new THREE.MeshBasicMaterial({color: Math.random() * 0xffffff});
             const object = new THREE.Mesh(geometry, material);
             const position = getRandomPosition(roomWidth, roomHeight, roomDepth);
             object.position.set(position.x, position.y, position.z);
@@ -108,5 +102,4 @@
         });
     </script>
 </body>
-
 </html>
